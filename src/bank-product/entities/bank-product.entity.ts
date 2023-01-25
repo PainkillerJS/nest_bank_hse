@@ -10,6 +10,9 @@ export class BankProductEntity extends BaseEntity {
   @Column({ default: '' })
   description: string;
 
+  @Column('varchar', { array: true })
+  tags: string[];
+
   @Column({ default: true })
   isActive?: boolean;
 

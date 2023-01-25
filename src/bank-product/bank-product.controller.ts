@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -27,6 +28,11 @@ export class BankProductController {
     return this.bankProductService.getAllBankProduct();
   }
 
+  @HttpCode(200)
+  @Get('find-by-tag')
+  async findBankProductByTag(@Query('tag') tag: string) {
+    return this.bankProductService.findByTag(tag);
+  }
   @HttpCode(200)
   @Get(':id')
   async getBankProductById(@Param('id', ParseIntPipe) id: number) {
@@ -49,7 +55,7 @@ export class BankProductController {
   @Put('update/:id')
   async updateBankProduct(
     @Param('id', ParseIntPipe) id: number,
-    @Body() dto: BankProductDto,
+    @Body() dto: Partial<BankProductDto>,
   ) {
     return this.bankProductService.updateBankProduct(id, dto);
   }

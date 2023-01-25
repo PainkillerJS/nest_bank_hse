@@ -1,4 +1,4 @@
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class BankProductDto {
   @IsString()
@@ -11,4 +11,8 @@ export class BankProductDto {
   @IsBoolean()
   @IsOptional()
   isActive: boolean;
+
+  @IsArray()
+  @IsString({ each: true })
+  tags: string[];
 }

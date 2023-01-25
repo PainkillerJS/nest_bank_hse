@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BankProductEntity } from './entities/bank-product.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { BankProductDto } from './dto/bank-product.dto';
 
 import { getOptionsForFindBankProduct } from './helpers/getOptionsForFindBankProduct';
@@ -28,6 +28,14 @@ export class BankProductService {
     });
   }
 
+  async findByTag(tag: string) {
+    const bankProduct = await this.getAllBankProduct();
+
+    return bankProduct.filter(({ tags }) =>
+      tags.map((tag) => tag.toLowerCase()).includes(tag.toLowerCase()),
+    );
+  }
+
   async createBankProduct(dto: BankProductDto) {
     const existBank = await this.bankProductRepository.findOneBy({
       name: dto.name,
@@ -42,8 +50,13 @@ export class BankProductService {
     return await this.bankProductRepository.save(newVideo);
   }
 
-  async updateBankProduct(id: BankProductEntity['id'], dto: BankProductDto) {
+  async updateBankProduct(
+    id: BankProductEntity['id'],
+    dto: Partial<BankProductDto>,
+  ) {
     const bankProduct = await this.bankProductRepository.findOneBy({ id });
+
+    console.log(bankProduct);
 
     if (!bankProduct) {
       throw new NotFoundException('Такого продукта не существует');

@@ -20,6 +20,7 @@ export const getOptionsForFindBankProduct = (
         id: true,
       },
       isActive: true,
+      tags: true,
     },
 
     ...(isFindAll
